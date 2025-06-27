@@ -102,16 +102,21 @@ function EmployeePanel({ user }) {
   // Отправка теста
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Firestore не поддерживает вложенные массивы, нормализуем answers
     const normalizedAnswers = answers.map(ans =>
       Array.isArray(ans)
         ? ans.flat(Infinity).filter(a => typeof a === 'string')
         : (typeof ans === 'string' ? ans : '')
     );
+    const finalAnswers = normalizedAnswers.map(ans =>
+      Array.isArray(ans) && ans.length === 1 ? ans[0] : ans
+    );
+    console.log('answers:', answers);
+    console.log('normalizedAnswers:', normalizedAnswers);
+    console.log('finalAnswers:', finalAnswers);
     await addResult({
       testId: test.id,
       user: user.login,
-      answers: normalizedAnswers,
+      answers: finalAnswers,
       score: null, // выставит админ
       checked: false,
     });

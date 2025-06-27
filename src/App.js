@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import './index.css';
 import Login from './Login';
 import Register from './Register';
 import AdminPanel from './AdminPanel';

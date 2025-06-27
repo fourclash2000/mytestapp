@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { getAllUsers } from './db';
 
 function Login({ onLogin, onSwitchToRegister }) {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const users = await getAllUsers();
     const user = users.find(u => u.login === login && u.password === password);
     if (!user) {
       setError('Неверный логин или пароль');

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAllTests, getAllResults, addResult } from './db';
 
 function EmployeePanel({ user }) {
   const [test, setTest] = useState(null); // текущий тест для прохождения
@@ -11,27 +12,30 @@ function EmployeePanel({ user }) {
   useEffect(() => {
     setShowFirework(sessionStorage.getItem('showFirework') === 'true');
     sessionStorage.removeItem('showFirework');
-    const tests = JSON.parse(localStorage.getItem('tests') || '[]').filter(t => t.shop === user.shop);
-    const results = JSON.parse(localStorage.getItem('results') || '[]');
-    if (tests.length === 0) {
-      setTest(null);
-      setAnswers([]);
-      setResult(null);
-      return;
+    async function fetchData() {
+      const tests = (await getAllTests()).filter(t => t.shop === user.shop);
+      const results = await getAllResults();
+      if (tests.length === 0) {
+        setTest(null);
+        setAnswers([]);
+        setResult(null);
+        return;
+      }
+      // Находим самый новый тест (по максимальному времени создания)
+      const newestTest = tests.reduce((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? a : b));
+      const hasPassed = results.some(r => r.testId === newestTest.id && r.user === user.login);
+      if (!hasPassed) {
+        setTest(newestTest);
+        setAnswers(Array(newestTest.questions.length).fill(''));
+        setResult(null);
+      } else {
+        setTest(null);
+        setAnswers([]);
+        setResult(results.find(r => r.testId === newestTest.id && r.user === user.login) || null);
+      }
+      setSubmitted(false);
     }
-    // Находим самый новый тест (по максимальному id)
-    const newestTest = tests.reduce((a, b) => (a.id > b.id ? a : b));
-    const hasPassed = results.some(r => r.testId === newestTest.id && r.user === user.login);
-    if (!hasPassed) {
-      setTest(newestTest);
-      setAnswers(Array(newestTest.questions.length).fill(''));
-      setResult(null);
-    } else {
-      setTest(null);
-      setAnswers([]);
-      setResult(results.find(r => r.testId === newestTest.id && r.user === user.login) || null);
-    }
-    setSubmitted(false);
+    fetchData();
   }, [user.login, user.shop]);
 
   if (!test && !result) {
@@ -96,17 +100,15 @@ function EmployeePanel({ user }) {
   };
 
   // Отправка теста
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const results = JSON.parse(localStorage.getItem('results') || '[]');
-    results.push({
+    await addResult({
       testId: test.id,
       user: user.login,
       answers,
       score: null, // выставит админ
       checked: false,
     });
-    localStorage.setItem('results', JSON.stringify(results));
     setSubmitted(true);
     setTest(null);
     setResult({ answers, score: null });

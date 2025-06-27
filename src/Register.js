@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getAllUsers, addUser } from './db';
 
 function Register({ onSwitchToLogin }) {
   const [login, setLogin] = useState('');
@@ -7,19 +8,18 @@ function Register({ onSwitchToLogin }) {
   const [error, setError] = useState('');
   const [shop, setShop] = useState('');
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (!login || !password || !shop) {
       setError('Заполните все поля');
       return;
     }
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const users = await getAllUsers();
     if (users.find(u => u.login === login)) {
       setError('Пользователь с таким логином уже существует');
       return;
     }
-    users.push({ login, password, role, shop });
-    localStorage.setItem('users', JSON.stringify(users));
+    await addUser({ login, password, role, shop });
     alert('Регистрация успешна! Теперь войдите.');
     onSwitchToLogin();
   };

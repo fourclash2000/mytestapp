@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { addTest, getAllTests, getAllResults, updateResult, deleteResult } from './db';
 
 const QUESTION_TYPES = [
   { value: 'single', label: 'Один вариант' },
@@ -21,11 +22,9 @@ function AdminPanel({ user }) {
   const maxScore = getMaxScore(questions);
 
   // Сохраняем тест в localStorage
-  const handleSaveTest = (e) => {
+  const handleSaveTest = async (e) => {
     e.preventDefault();
-    const tests = JSON.parse(localStorage.getItem('tests') || '[]');
     const newTest = {
-      id: Date.now(),
       author: user.login,
       shop: user.shop,
       title,
@@ -34,8 +33,7 @@ function AdminPanel({ user }) {
       maxScore,
       createdAt: new Date().toISOString(),
     };
-    tests.push(newTest);
-    localStorage.setItem('tests', JSON.stringify(tests));
+    await addTest(newTest);
     setCreating(false);
     setTitle('');
     setDescription('');
@@ -236,29 +234,37 @@ function ResultsTable() {
   const [questionComments, setQuestionComments] = useState([]); // массив комментариев по вопросам
 
   useEffect(() => {
-    setResults(JSON.parse(localStorage.getItem('results') || '[]'));
-    setTests(JSON.parse(localStorage.getItem('tests') || '[]'));
+    async function fetchData() {
+      setResults(await getAllResults());
+      setTests(await getAllTests());
+    }
+    fetchData();
   }, []);
 
-  const handleSetScore = (resultId, questionCount, commentsArr) => {
+  const handleSetScore = async (resultId, questionCount, commentsArr) => {
     const total = questionScores.slice(0, questionCount).reduce((sum, s) => sum + (Number(s) || 0), 0);
-    const newResults = results.map((r, idx) =>
-      idx === resultId ? { ...r, score: total, questionScores: questionScores.slice(0, questionCount), questionComments: commentsArr.slice(0, questionCount), checked: true } : r
-    );
-    setResults(newResults);
-    localStorage.setItem('results', JSON.stringify(newResults));
+    const result = results[resultId];
+    await updateResult(result.id, {
+      score: total,
+      questionScores: questionScores.slice(0, questionCount),
+      questionComments: commentsArr.slice(0, questionCount),
+      checked: true
+    });
+    // Обновить локально
+    const updatedResults = [...results];
+    updatedResults[resultId] = { ...result, score: total, questionScores: questionScores.slice(0, questionCount), questionComments: commentsArr.slice(0, questionCount), checked: true };
+    setResults(updatedResults);
     setEditing(null);
     setQuestionScores([]);
     setShowTest(null);
     setQuestionComments([]);
   };
 
-  // Удаление проверенного результата
-  const handleDelete = (idx) => {
+  const handleDelete = async (idx) => {
     if (!window.confirm('Удалить этот проверенный результат?')) return;
-    const newResults = results.filter((_, i) => i !== idx);
-    setResults(newResults);
-    localStorage.setItem('results', JSON.stringify(newResults));
+    const result = results[idx];
+    await deleteResult(result.id);
+    setResults(results.filter((_, i) => i !== idx));
   };
 
   if (!results.length) return <div>Нет отправленных тестов</div>;
@@ -402,13 +408,19 @@ function HistoryTable() {
   const [showDetail, setShowDetail] = useState(null); // результат для подробного просмотра
 
   useEffect(() => {
-    setResults(JSON.parse(localStorage.getItem('results') || '[]'));
-    setTests(JSON.parse(localStorage.getItem('tests') || '[]'));
+    async function fetchData() {
+      setResults(await getAllResults());
+      setTests(await getAllTests());
+    }
+    fetchData();
   }, []);
 
-  const handleClear = () => {
+  const handleClear = async () => {
     if (window.confirm('Вы уверены, что хотите очистить всю историю?')) {
-      localStorage.removeItem('results');
+      // Удалить все результаты из Firestore
+      for (const r of results) {
+        await deleteResult(r.id);
+      }
       setResults([]);
     }
   };
@@ -478,7 +490,11 @@ function HistoryTable() {
 function TestList({ user, setCreating, setTitle, setDescription, setQuestions }) {
   const [tests, setTests] = useState([]);
   useEffect(() => {
-    setTests((JSON.parse(localStorage.getItem('tests') || '[]')).filter(t => t.author === user.login && t.shop === user.shop));
+    async function fetchTests() {
+      const allTests = await getAllTests();
+      setTests(allTests.filter(t => t.author === user.login && t.shop === user.shop));
+    }
+    fetchTests();
   }, [user.login, user.shop]);
 
   const handleEdit = (test) => {

@@ -102,10 +102,14 @@ function EmployeePanel({ user }) {
   // Отправка теста
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Firestore не поддерживает вложенные массивы, нормализуем answers
+    const normalizedAnswers = answers.map(ans =>
+      Array.isArray(ans) ? ans.flat().filter(a => typeof a === 'string') : ans
+    );
     await addResult({
       testId: test.id,
       user: user.login,
-      answers,
+      answers: normalizedAnswers,
       score: null, // выставит админ
       checked: false,
     });

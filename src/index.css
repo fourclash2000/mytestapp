@@ -1,13 +1,85 @@
 body {
   margin: 0;
+  min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
+  transition: background 0.5s;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Современное оформление формы входа/регистрации */
+.auth-container {
+  background: #fff;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  border-radius: 16px;
+  padding: 40px 32px 32px 32px;
+  max-width: 400px;
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-container h2 {
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
+  width: 100%;
+  padding: 14px 12px;
+  margin-bottom: 18px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  background: #f4f6fb;
+  transition: border 0.2s;
+}
+
+.auth-container input[type="text"]:focus,
+.auth-container input[type="password"]:focus {
+  border: 1.5px solid #60d394;
+  outline: none;
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 14px 0;
+  background: linear-gradient(90deg, #60d394 0%, #3ac569 100%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(60, 211, 148, 0.08);
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.auth-container button:hover {
+  background: linear-gradient(90deg, #3ac569 0%, #60d394 100%);
+  box-shadow: 0 4px 16px rgba(60, 211, 148, 0.16);
+}
+
+.auth-container a {
+  color: #3ac569;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.auth-container a:hover {
+  color: #60d394;
+  text-decoration: underline;
 }

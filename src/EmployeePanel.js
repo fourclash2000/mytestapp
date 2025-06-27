@@ -21,7 +21,7 @@ function EmployeePanel({ user }) {
         setResult(null);
         return;
       }
-      // Находим самый новый тест (по максимальному времени создания)
+      // Находим самый новый тест для магазина (по максимальному времени создания)
       const newestTest = tests.reduce((a, b) => (new Date(a.createdAt) > new Date(b.createdAt) ? a : b));
       const hasPassed = results.some(r => r.testId === newestTest.id && r.user === user.login);
       if (!hasPassed) {

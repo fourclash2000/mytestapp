@@ -83,3 +83,127 @@ code {
   color: #60d394;
   text-decoration: underline;
 }
+
+/* Современные карточки и панели */
+.card, .panel, .question-card, .test-card, .admin-panel, .employee-panel {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(60,72,88,0.10);
+  padding: 28px 24px;
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s;
+}
+.card:hover, .panel:hover, .test-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(60,72,88,0.16);
+}
+
+/* Современные кнопки */
+.btn, .button, button {
+  background: linear-gradient(90deg, #60d394 0%, #3ac569 100%);
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(60, 211, 148, 0.08);
+  cursor: pointer;
+  padding: 12px 28px;
+  margin: 6px 0;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn:hover, .button:hover, button:hover {
+  background: linear-gradient(90deg, #3ac569 0%, #60d394 100%);
+  box-shadow: 0 4px 16px rgba(60, 211, 148, 0.16);
+}
+
+/* Кнопка "Создать тест" — выделена */
+.create-test-btn {
+  background: linear-gradient(90deg, #43a047 0%, #60d394 100%);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(67, 160, 71, 0.12);
+  margin-bottom: 18px;
+}
+.create-test-btn:hover {
+  background: linear-gradient(90deg, #60d394 0%, #43a047 100%);
+}
+
+/* Заголовки */
+h1, h2, h3, h4 {
+  font-family: inherit;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 18px;
+}
+
+/* Современные поля ввода */
+input[type="text"], input[type="password"], input[type="number"], textarea, select {
+  width: 100%;
+  padding: 12px 10px;
+  margin-bottom: 14px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  background: #f4f6fb;
+  transition: border 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border: 1.5px solid #60d394;
+  outline: none;
+}
+
+/* Современные таблицы */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+th, td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e3eaf1;
+  text-align: left;
+}
+th {
+  background: #f5faff;
+  font-weight: 700;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Современные списки */
+ul, ol {
+  padding-left: 24px;
+  margin-bottom: 18px;
+}
+li {
+  margin-bottom: 8px;
+  font-size: 1.08rem;
+}
+
+/* Центрирование и отступы */
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+  .card, .panel, .question-card, .test-card, .admin-panel, .employee-panel {
+    padding: 16px 6px;
+    margin-bottom: 14px;
+  }
+  h1, h2, h3, h4 {
+    font-size: 1.2em;
+  }
+  .auth-container {
+    padding: 18px 6px 16px 6px;
+  }
+}

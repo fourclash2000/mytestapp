@@ -70,7 +70,7 @@ function TestEditor() {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+    <div className="panel" style={{ maxWidth: 800, margin: '0 auto' }}>
       <h2>Создание/редактирование теста</h2>
       <form onSubmit={handleSave}>
         <div>
@@ -80,7 +80,7 @@ function TestEditor() {
             value={title}
             onChange={e => setTitle(e.target.value)}
             required
-            style={{ width: '100%', marginBottom: 8 }}
+            className="answer-input"
           />
         </div>
         <div>
@@ -88,12 +88,12 @@ function TestEditor() {
           <textarea
             value={description}
             onChange={e => setDescription(e.target.value)}
-            style={{ width: '100%', marginBottom: 16 }}
+            className="comment-textarea"
           />
         </div>
         <h3>Вопросы</h3>
         {questions.map((q, idx) => (
-          <div key={idx} style={{ border: '1px solid #ccc', padding: 12, marginBottom: 12 }}>
+          <div key={idx} className="question-card">
             <div>
               <label>Текст вопроса:</label>
               <input
@@ -101,7 +101,7 @@ function TestEditor() {
                 value={q.text}
                 onChange={e => handleQuestionChange(idx, 'text', e.target.value)}
                 required
-                style={{ width: '100%', marginBottom: 8 }}
+                className="answer-input"
               />
             </div>
             <div>
@@ -109,7 +109,7 @@ function TestEditor() {
               <select
                 value={q.type}
                 onChange={e => handleQuestionChange(idx, 'type', e.target.value)}
-                style={{ marginBottom: 8 }}
+                className="answer-input"
               >
                 {QUESTION_TYPES.map(type => (
                   <option key={type.value} value={type.value}>{type.label}</option>
@@ -126,20 +126,20 @@ function TestEditor() {
                       value={opt}
                       onChange={e => handleOptionChange(idx, oIdx, e.target.value)}
                       required
-                      style={{ flex: 1 }}
+                      className="answer-input"
                     />
-                    <button type="button" onClick={() => handleRemoveOption(idx, oIdx)} style={{ marginLeft: 4 }}>Удалить</button>
+                    <button className="btn" type="button" onClick={() => handleRemoveOption(idx, oIdx)} style={{ marginLeft: 4 }}>Удалить</button>
                   </div>
                 ))}
-                <button type="button" onClick={() => handleAddOption(idx)}>Добавить вариант</button>
+                <button className="btn" type="button" onClick={() => handleAddOption(idx)}>Добавить вариант</button>
               </div>
             )}
-            <button type="button" onClick={() => handleRemoveQuestion(idx)} style={{ marginTop: 8, color: 'red' }}>Удалить вопрос</button>
+            <button className="btn" type="button" onClick={() => handleRemoveQuestion(idx)} style={{ marginTop: 8, color: 'red' }}>Удалить вопрос</button>
           </div>
         ))}
-        <button type="button" onClick={handleAddQuestion} style={{ marginBottom: 16 }}>Добавить вопрос</button>
+        <button className="btn" type="button" onClick={handleAddQuestion} style={{ marginBottom: 16 }}>Добавить вопрос</button>
         <br />
-        <button type="submit">Сохранить тест</button>
+        <button className="btn" type="submit">Сохранить тест</button>
       </form>
     </div>
   );

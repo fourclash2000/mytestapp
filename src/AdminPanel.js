@@ -108,15 +108,15 @@ function AdminPanel({ user }) {
   };
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto' }}>
+    <div className="admin-panel" style={{ maxWidth: 900, margin: '0 auto' }}>
       <div style={{ marginBottom: 16 }}>
-        <button onClick={() => { setView('tests'); setCreating(false); }} style={{ marginRight: 8 }}>
+        <button className="btn" onClick={() => { setView('tests'); setCreating(false); }} style={{ marginRight: 8 }}>
           Управление тестами
         </button>
-        <button onClick={() => { setView('stats'); setCreating(false); }} style={{ marginRight: 8 }}>
+        <button className="btn" onClick={() => { setView('stats'); setCreating(false); }} style={{ marginRight: 8 }}>
           Статистика и баллы
         </button>
-        <button onClick={() => { setView('history'); setCreating(false); }}>
+        <button className="btn" onClick={() => { setView('history'); setCreating(false); }}>
           История
         </button>
       </div>
@@ -133,12 +133,12 @@ function AdminPanel({ user }) {
                   style={{ width: 120, height: 120, objectFit: 'contain', borderRadius: 18, boxShadow: '0 2px 8px 0 rgba(60,72,88,0.10)' }}
                 />
               </div>
-              <button onClick={() => setCreating(true)} style={{ marginBottom: 16, background: '#43a047', color: '#fff' }}>Создать тест</button>
+              <button className="create-test-btn" onClick={() => setCreating(true)}>Создать тест</button>
               {/* Список тестов администратора */}
               <TestList user={user} setCreating={setCreating} setTitle={setTitle} setDescription={setDescription} setQuestions={setQuestions} />
             </div>
           ) : (
-            <form onSubmit={handleSaveTest} className="create-test-form">
+            <form onSubmit={handleSaveTest} className="create-test-form card">
               {/* Тематическая картинка */}
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
                 <img
@@ -153,15 +153,15 @@ function AdminPanel({ user }) {
               </div>
               <div>
                 <label>Название теста:</label>
-                <input type="text" value={title} onChange={e => setTitle(e.target.value)} required className="answer-input" style={{ marginBottom: 14 }} />
+                <input type="text" value={title} onChange={e => setTitle(e.target.value)} required className="answer-input" />
               </div>
               <div>
                 <label>Описание:</label>
-                <textarea value={description} onChange={e => setDescription(e.target.value)} className="comment-textarea" style={{ marginBottom: 18 }} />
+                <textarea value={description} onChange={e => setDescription(e.target.value)} className="comment-textarea" />
               </div>
               <h4 style={{ color: '#1976d2', marginTop: 18 }}>Вопросы</h4>
               {questions.map((q, idx) => (
-                <div key={idx} className="question-card" style={{ background: '#f5faff', border: '1px solid #e3eaf1', borderRadius: 18, marginBottom: 18, boxShadow: '0 1px 4px 0 rgba(60,72,88,0.04)', padding: 18 }}>
+                <div key={idx} className="question-card">
                   <b style={{ color: '#1a237e' }}>Вопрос {idx + 1}</b>
                   <div>
                     <label>Текст вопроса:</label>
@@ -190,23 +190,23 @@ function AdminPanel({ user }) {
                       {q.options.map((opt, oIdx) => (
                         <div key={oIdx} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
                           <input type="text" value={opt} onChange={e => handleOptionChange(idx, oIdx, e.target.value)} required className="answer-input" style={{ marginBottom: 0, flex: 1 }} />
-                          <button type="button" onClick={() => handleRemoveOption(idx, oIdx)} style={{ marginLeft: 4 }}>Удалить</button>
+                          <button className="btn" type="button" onClick={() => handleRemoveOption(idx, oIdx)} style={{ marginLeft: 4 }}>Удалить</button>
                         </div>
                       ))}
-                      <button type="button" onClick={() => handleAddOption(idx)}>Добавить вариант</button>
+                      <button className="btn" type="button" onClick={() => handleAddOption(idx)}>Добавить вариант</button>
                     </div>
                   )}
                   {questions.length > 1 && (
-                    <button type="button" onClick={() => handleRemoveQuestion(idx)} style={{ marginTop: 8, color: 'red' }}>Удалить вопрос</button>
+                    <button className="btn" type="button" onClick={() => handleRemoveQuestion(idx)} style={{ marginTop: 8, color: 'red' }}>Удалить вопрос</button>
                   )}
                 </div>
               ))}
               {/* Кнопка добавить вопрос появляется только если последний вопрос заполнен */}
               {questions[questions.length - 1].text.trim() && (
-                <button type="button" onClick={handleAddQuestion} style={{ marginBottom: 16 }}>Добавить вопрос</button>
+                <button className="btn" type="button" onClick={handleAddQuestion} style={{ marginBottom: 16 }}>Добавить вопрос</button>
               )}
               <br />
-              <button type="submit" style={{ width: 220, fontSize: '1.15rem', borderRadius: 22 }}>Сохранить тест</button>
+              <button className="btn" type="submit">Сохранить тест</button>
               <button type="button" onClick={() => setCreating(false)} style={{ marginLeft: 8 }}>Отмена</button>
             </form>
           )}

@@ -35,14 +35,14 @@ function EmployeePanel({ user }) {
   }, [user.login, user.shop]);
 
   if (!test && !result) {
-    return <div style={{ maxWidth: 600, margin: '40px auto', textAlign: 'center' }}><h2>Нет доступных тестов для прохождения</h2></div>;
+    return <div className="employee-panel" style={{ maxWidth: 600, margin: '40px auto', textAlign: 'center' }}><h2>Нет доступных тестов для прохождения</h2></div>;
   }
 
   if (result) {
     const test = JSON.parse(localStorage.getItem('tests') || '[]').find(t => t.id === result.testId);
     return (
-      <div style={{ maxWidth: 600, margin: '40px auto', textAlign: 'center' }}>
-        <div style={{ background: '#fff', borderRadius: 22, boxShadow: '0 2px 16px 0 rgba(60,72,88,0.10)', padding: '32px 24px', margin: '0 auto' }}>
+      <div className="employee-panel" style={{ maxWidth: 600, margin: '40px auto', textAlign: 'center' }}>
+        <div className="card" style={{ margin: '0 auto' }}>
           {/* Тематическая картинка */}
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
             <img
@@ -116,7 +116,7 @@ function EmployeePanel({ user }) {
 
   if (test && !submitted) {
     return (
-      <div style={{ maxWidth: 700, margin: '40px auto' }}>
+      <div className="employee-panel" style={{ maxWidth: 700, margin: '40px auto' }}>
         {/* Тематическая картинка */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
           <img
@@ -130,7 +130,7 @@ function EmployeePanel({ user }) {
         <div style={{ marginBottom: 18, color: '#1976d2', fontWeight: 600 }}>Макс баллов {test.maxScore || 100}</div>
         <form onSubmit={handleSubmit}>
           {test.questions.map((q, idx) => (
-            <div key={idx} className="question-card" style={{ border: '1px solid #e3eaf1', borderRadius: 18, marginBottom: 18, background: '#fff', boxShadow: '0 2px 8px 0 rgba(60,72,88,0.07)', padding: 18 }}>
+            <div key={idx} className="question-card">
               <b style={{ color: '#1a237e' }}>Вопрос {idx + 1}:</b> <span style={{ fontWeight: 500 }}>{q.text}</span>
               {q.image && (
                 <div style={{ margin: '12px 0' }}>
@@ -182,7 +182,7 @@ function EmployeePanel({ user }) {
               </div>
             </div>
           ))}
-          <button type="submit" style={{ marginTop: 16, width: 220, fontSize: '1.15rem', borderRadius: 22 }}>Отправить ответы</button>
+          <button className="btn" type="submit" style={{ marginTop: 16, width: 220, fontSize: '1.15rem', borderRadius: 22 }}>Отправить ответы</button>
         </form>
       </div>
     );
@@ -191,7 +191,7 @@ function EmployeePanel({ user }) {
   if (!test && !result && submitted) {
     // После отправки теста, до обновления страницы
     return (
-      <div style={{ maxWidth: 600, margin: '40px auto', textAlign: 'center' }}>
+      <div className="employee-panel" style={{ maxWidth: 600, margin: '40px auto', textAlign: 'center' }}>
         <div className="card">
           {showFirework && (
             <div style={{ marginBottom: 18 }}>

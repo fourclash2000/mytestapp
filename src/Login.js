@@ -17,7 +17,7 @@ function Login({ onLogin, onSwitchToRegister }) {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '40px auto', border: '1px solid #ccc', padding: 24, borderRadius: 8 }}>
+    <div className="auth-container">
       <h2>Вход</h2>
       <form className="login-form" onSubmit={handleLogin}>
         <div>

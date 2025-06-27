@@ -104,7 +104,9 @@ function EmployeePanel({ user }) {
     e.preventDefault();
     // Firestore не поддерживает вложенные массивы, нормализуем answers
     const normalizedAnswers = answers.map(ans =>
-      Array.isArray(ans) ? ans.flat().filter(a => typeof a === 'string') : ans
+      Array.isArray(ans)
+        ? ans.flat(Infinity).filter(a => typeof a === 'string')
+        : (typeof ans === 'string' ? ans : '')
     );
     await addResult({
       testId: test.id,
